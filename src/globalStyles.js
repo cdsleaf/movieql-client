@@ -9,7 +9,7 @@ injectGlobal`
     background-color: #ecf0f1;
   }
   a{
-    color:ingerit;
+    color:inherit;
   }
   main {
     width: 80%;
