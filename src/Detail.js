@@ -1,5 +1,5 @@
 import React from "react";
-import { Query } from "react-apollo";
+import { useQuery } from '@apollo/react-hooks';
 import { MOVIE_DETAILS } from "./queries";
 import Movie from "./Movie";
 import styled from "styled-components";
@@ -37,41 +37,39 @@ const MovieContainer = styled.div`
   margin-top: 50px;
 `;
 
-const Detail = ({
-  match: {
-    params: { movieId }
-  }
-}) => (
-  <Query query={MOVIE_DETAILS} variables={{movieId: parseInt(movieId)}}>
-    {({loading, error, data})=>{
-      if(loading) return "loading";
-      if(error) return "error";
-      return (
-        <React.Fragment>
-          <Container>
-            <Image src={data.movie.medium_cover_image} />
-            <span>
-              <Title>{data.movie.title}</Title>
-              <Paragraph bold>Rating: {data.movie.rating}</Paragraph>
-              <Paragraph>{data.movie.description_intro}</Paragraph>
-            </span>
-          </Container>
-          <Title>Suggested</Title>
-          <MovieContainer>
-            {data.suggestions.map(movie => (
-              <Movie 
-                key={movie.id}
-                id={movie.id}
-                title={movie.title}
-                rating={movie.rating}
-                poster={movie.medium_cover_image}
-              />
-            ))}
-          </MovieContainer>
-        </React.Fragment>
-      )
-    }
-  }</Query>
-);
+function Detail({ match: { params: { movieId } } }) {
+
+  const { loading, error, data} = useQuery(MOVIE_DETAILS, {
+    variables: {movieId: parseInt(movieId)}
+  });
+
+  if(loading) return <p>Loading...</p>;
+  if(error) return <p>Error</p>;  
+
+  return (
+    <>
+      <Container>
+        <Image src={data.movie.medium_cover_image} />
+        <span>
+          <Title>{data.movie.title}</Title>
+          <Paragraph bold>Rating: {data.movie.rating}</Paragraph>
+          <Paragraph>{data.movie.description_intro}</Paragraph>
+        </span>
+      </Container>
+      <Title>Suggested</Title>
+      <MovieContainer>
+        {data.suggestions.map(movie => (
+          <Movie 
+            key={movie.id}
+            id={movie.id}
+            title={movie.title}
+            rating={movie.rating}
+            poster={movie.medium_cover_image}
+          />
+        ))}
+      </MovieContainer>
+    </>
+  );
+}
 
 export default Detail;
