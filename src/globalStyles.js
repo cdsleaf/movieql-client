@@ -1,7 +1,7 @@
-import { injectGlobal } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 
-injectGlobal`
+const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Maven+Pro');
   ${reset};
   body{
@@ -17,3 +17,5 @@ injectGlobal`
     padding: 20px;
   }
 `;
+
+export default GlobalStyle;
