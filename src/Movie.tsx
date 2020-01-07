@@ -1,12 +1,22 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+
+interface movieProps {
+  id: number;
+  title: string;
+  rating: number;
+  poster: string;
+}
+
+interface cardProps {
+  background: string;
+}
 
 const Card = styled.div`
   border-radius: 15px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-  background-image: ${props => `url(${props.background})`};
+  background-image: ${(props:cardProps) => `url(${props.background})`};
   background-size: cover;
   background-position: center center;
   height: 300px;
@@ -27,7 +37,7 @@ const Title = styled.span`
   margin: auto;
 `;
 
-const Movie = ({ id, title, rating, poster }) => (
+const Movie = ({ id, title, rating, poster }: movieProps) => (
   <Link to={`/details/${id}/`}>
     <Card background={poster}>
       <Title>
@@ -36,12 +46,5 @@ const Movie = ({ id, title, rating, poster }) => (
     </Card>
   </Link>
 );
-
-Movie.propType = {
-  id: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
-  rating: PropTypes.number.isRequired,
-  poster: PropTypes.string.isRequired,
-};
 
 export default Movie;
